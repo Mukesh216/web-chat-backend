@@ -1,6 +1,6 @@
 // server/index.js or server/index.mjs
 import { createServer } from "http";
-import { WebSocketServer as Server } from "ws";
+// import { WebSocketServer as Server } from "ws";
 import express from "express";
 import cors from "cors";
 //dotenv
@@ -24,6 +24,13 @@ const presenceServer = createServer(app);
 // const presenceWss = new Server({ server: presenceServer });
 
 app.use(cors());
+
+app.use(express.static("public"));
+
+app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+
 
 app.get('/', (req, res) => {
   // Handle API request logic here
