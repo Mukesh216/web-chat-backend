@@ -3,16 +3,13 @@ import { createServer } from "http";
 import { WebSocketServer as Server } from "ws";
 import express from "express";
 import cors from "cors";
+//dotenv
+import dotenv from "dotenv";
+dotenv.config(
+  {path:"../.env"}
+);
 
-// import admin from "firebase-admin";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  collection,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
+import {  doc,  setDoc,  getDoc,  collection,  updateDoc,  onSnapshot,} from "firebase/firestore";
 import { db } from "../firebase.js";
 
 
@@ -20,8 +17,14 @@ const app = express();
 const messageServer = createServer(app);
 const presenceServer = createServer(app);
 
+
 const messageWss = new Server({ server: messageServer });
 const presenceWss = new Server({ server: presenceServer });
+
+
+const MESSAGE_PORT = process.env.PORTM;
+const PRESENCE_PORT = process.env.PORTP;
+
 
 app.use(cors());
 
@@ -147,8 +150,6 @@ presenceWss.on("connection", (ws) => {
 });
 
 
-const PRESENCE_PORT = 3001;
-const MESSAGE_PORT = 3002;
 
 messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
   console.log(`WebSocket server is listening on port ${MESSAGE_PORT}`);
