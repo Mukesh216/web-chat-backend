@@ -6,11 +6,11 @@ import cors from "cors";
 //dotenv
 import dotenv from "dotenv";
 dotenv.config(
-  {path:"../.env"}
+  {path:"./.env"}
 );
 
 import {  doc,  setDoc,  getDoc,  collection,  updateDoc,  onSnapshot,} from "firebase/firestore";
-import { db } from "../firebase.js";
+import { db } from "./firebase.js";
 
 
 const app = express();
