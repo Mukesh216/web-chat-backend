@@ -11,6 +11,9 @@ dotenv.config(
 );
 
 
+
+
+
 import { handleWebSocketConnections } from "./server.js";
 
 // import {  doc,  setDoc,  getDoc,  collection,  updateDoc,  onSnapshot} from "firebase/firestore";
@@ -31,8 +34,7 @@ app.use(cors());
 //configure with public folder
 
 // Assuming this code is in index.js inside the server directory
-const publicPath = path.join(__dirname, '../public');
-app.use(express.static(publicPath));
+app.use(express.static("public"));
 
 
 app.use(express.json());
@@ -42,7 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
   // Handle API request logic here
-  res.json({ message: 'Backend API response' });
+  res.status(200).json({ message: 'Hello World' });
 });
 
 
