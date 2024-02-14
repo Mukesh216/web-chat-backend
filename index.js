@@ -25,6 +25,12 @@ const presenceServer = createServer(app);
 
 app.use(cors());
 
+app.get('/', (req, res) => {
+  // Handle API request logic here
+  res.json({ message: 'Backend API response' });
+});
+
+
 
 handleWebSocketConnections(messageServer, presenceServer);
 
