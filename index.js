@@ -3,11 +3,13 @@ import { createServer } from "http";
 // import { WebSocketServer as Server } from "ws";
 import express from "express";
 import cors from "cors";
+import path from "path";
 //dotenv
 import dotenv from "dotenv";
 dotenv.config(
   {path:"./.env"}
 );
+
 
 import { handleWebSocketConnections } from "./server.js";
 
@@ -25,7 +27,13 @@ const presenceServer = createServer(app);
 
 app.use(cors());
 
-app.use(express.static("public"));
+
+//configure with public folder
+
+// Assuming this code is in index.js inside the server directory
+const publicPath = path.join(__dirname, '../public');
+app.use(express.static(publicPath));
+
 
 app.use(express.json());
 
