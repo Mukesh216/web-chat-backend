@@ -59,10 +59,10 @@ const MESSAGE_PORT = process.env.PORTM;
 const PRESENCE_PORT = process.env.PORTP; 
 
 // Start the servers and listen on the specified ports
-messageServer.listen(MESSAGE_PORT, '0.0.0.0', () => {
+messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
   console.log(`WebSocket server for messages is listening on port ${MESSAGE_PORT}`);
 });
 
-presenceServer.listen(PRESENCE_PORT, '0.0.0.0', () => {
+presenceServer.listen(PRESENCE_PORT, "0.0.0.0", () => {
   console.log(`WebSocket server for presence.. is listening on port ${PRESENCE_PORT}`);
 });
