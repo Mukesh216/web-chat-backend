@@ -1,58 +1,68 @@
-// server/index.js or server/index.mjs
-import { createServer } from "http";
-// import { WebSocketServer as Server } from "ws";
+// Import required modules
+import { createServer } from "http"; // Use https if your server uses SSL
 import express from "express";
 import cors from "cors";
-import path from "path";
-//dotenv
 import dotenv from "dotenv";
-dotenv.config(
-  {path:"./.env"}
-);  
+import { Server } from "socket.io";
+
+// Import function to handle WebSocket connections
 import { handleWebSocketConnections } from "./server.js";
 
+// Load environment variables from .env file
+dotenv.config({ path: "./.env" });
+
+// Create Express app
 const app = express();
+
+// Create HTTP servers using Express app
 const messageServer = createServer(app);
 const presenceServer = createServer(app);
 
+// Create Socket.IO servers using HTTP servers
+const messageIo = new Server({ server: messageServer });
+const presenceIo = new Server({ server: presenceServer });
 
+// Middleware setup
 app.use(cors());
-
-
-
 app.use(express.static("public"));
-
-
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
 
-
-app.get('/', (req, res) => {
-  // Handle API request logic here
-  res.status(200).json({ message: 'Hello World' });
+// Define your HTTP routes here
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Hello World" });
 });
 
+// Handle WebSocket connections using Socket.IO
+messageIo.on("connection", (socket) => {
+  console.log("A user connected to message server");
 
+  // Handle WebSocket events here
 
-handleWebSocketConnections(messageServer, presenceServer);
+  socket.on("disconnect", () => {
+    console.log("User disconnected from message server");
+  });
+});
 
+presenceIo.on("connection", (socket) => {
+  console.log("A user connected to presence server");
+
+  // Handle WebSocket events here
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected from presence server");
+  });
+});
+
+// Define the ports for your servers to listen on
 const MESSAGE_PORT = process.env.PORTM;
-const PRESENCE_PORT = process.env.PORTP;
+const PRESENCE_PORT = process.env.PORTP; 
 
-
-messageServer.listen(MESSAGE_PORT, "0.0.0.0", () => {
-  console.log(`WebSocket server is listening on port ${MESSAGE_PORT}`);
+// Start the servers and listen on the specified ports
+messageServer.listen(MESSAGE_PORT, '0.0.0.0', () => {
+  console.log(`WebSocket server for messages is listening on port ${MESSAGE_PORT}`);
 });
 
-presenceServer.listen(PRESENCE_PORT, "0.0.0.0", () => {
-  console.log(`WebSocket server is listening : USER ENTRY  ${PRESENCE_PORT}`);
+presenceServer.listen(PRESENCE_PORT, '0.0.0.0', () => {
+  console.log(`WebSocket server for presence.. is listening on port ${PRESENCE_PORT}`);
 });
-
-
-
-
-
-
-
-
