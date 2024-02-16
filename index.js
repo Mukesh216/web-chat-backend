@@ -19,8 +19,8 @@ const messageServer = createServer(app);
 const presenceServer = createServer(app);
 
 // Create Socket.IO servers using HTTP servers
-const messageIo = new Server(messageServer);
-const presenceIo = new Server(presenceServer);
+const messageIo = new Server({ server: messageServer });
+const presenceIo = new Server({ server: presenceServer });
 
 // Middleware setup
 app.use(cors());
@@ -55,8 +55,8 @@ presenceIo.on("connection", (socket) => {
 });
 
 // Define the ports for your servers to listen on
-const MESSAGE_PORT = process.env.PORTM || 3001;
-const PRESENCE_PORT = process.env.PORTP || 3002;
+const MESSAGE_PORT = process.env.PORTM;
+const PRESENCE_PORT = process.env.PORTP; 
 
 // Start the servers and listen on the specified ports
 messageServer.listen(MESSAGE_PORT, () => {
@@ -64,5 +64,5 @@ messageServer.listen(MESSAGE_PORT, () => {
 });
 
 presenceServer.listen(PRESENCE_PORT, () => {
-  console.log(`WebSocket server for presence is listening on port ${PRESENCE_PORT}`);
+  console.log(`WebSocket server for presence.. is listening on port ${PRESENCE_PORT}`);
 });
